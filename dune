@@ -1,0 +1,3 @@
+(executables 
+  (names sum list_max)
+  (libraries ounit2))
