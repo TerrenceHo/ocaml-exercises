@@ -1,3 +1,33 @@
+(* 7.1 REfs *)
+let x = ref 2
+let y = ref 2
+let z = x;;
+
+x := 3
+
+let w = !y + !z
+let _ = assert (w = 5)
+
+module Counter = struct
+  let init q = ref q
+
+  let next (x : int ref) =
+    x := !x + 1;
+    !x
+
+  let value (x : int ref) = !x
+end
+
+let cnt0 = Counter.init 0
+let _ = assert (Counter.next cnt0 = 1)
+let _ = assert (Counter.next cnt0 = 2)
+let _ = assert (Counter.value cnt0 = 2)
+let cnt1 = Counter.init 1
+let _ = assert (Counter.value cnt1 = 1)
+let _ = assert (Counter.next cnt1 = 2)
+let _ = assert (Counter.next cnt1 = 3)
+let _ = assert (Counter.value cnt1 = 3)
+
 module LinkedList = struct
   type 'a node = { next : 'a mlist; value : 'a ref }
   and 'a mlist = 'a node option ref
@@ -118,3 +148,55 @@ let arr_sum arr =
   !acc
 
 let _ = assert (arr_sum arr = 9)
+
+(* Exercises *)
+
+(* mutable fields *)
+type student = { name : string; mutable gpa : float }
+
+let alice : student = { name = "Alice"; gpa = 3.7 }
+let _ = alice.gpa <- 4.0
+let _ = assert (alice.gpa = 4.0)
+
+(* ref type examples  *)
+let (_ : bool ref) = ref false
+let (_ : int list ref) = ref [ 1; 2 ]
+let (_ : int ref list) = [ ref 0; ref 1 ]
+
+(* inc fun *)
+let inc = ref (fun x -> x + 1)
+let inc_fun = !inc 3109
+let _ = assert (inc_fun = 3110)
+
+(* addition assignment *)
+let ( +:= ) x y = x := !x + y
+let plus_equal = ref 0
+let _ = plus_equal +:= 3110
+let _ = assert (!plus_equal = 3110)
+
+(* norm *)
+type vector = float array
+
+let norm (v : vector) =
+  Float.sqrt (Array.fold_left (fun acc a -> acc +. (a ** 2.)) 0. v)
+
+(* normalize *)
+let normalize (v : vector) =
+  let n = norm v in
+  Array.iteri (fun (idx : int) ele -> v.(idx) <- ele /. n) v
+
+(* norm loop *)
+let norm_loop (v : vector) =
+  let norm : float ref = ref 0.0 in
+  for i = 0 to Array.length v - 1 do
+    norm := !norm +. (v.(i) ** 2.)
+  done;
+  sqrt !norm
+
+(* normalize loop *)
+
+let normalize_loop v =
+  let n = norm v in
+  for i = 0 to Array.length v - 1 do
+    v.(i) <- v.(i) /. n
+  done
