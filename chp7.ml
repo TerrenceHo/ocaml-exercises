@@ -200,3 +200,6 @@ let normalize_loop v =
   for i = 0 to Array.length v - 1 do
     v.(i) <- v.(i) /. n
   done
+
+(* init matrix *)
+let init_matrix n o f = Array.init n (fun i -> Array.init o (fun j -> f i j))
