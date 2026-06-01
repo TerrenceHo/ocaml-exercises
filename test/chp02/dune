@@ -1,0 +1,4 @@
+(test
+ (name test_chp02)
+ (libraries chp02 ounit2))
+
