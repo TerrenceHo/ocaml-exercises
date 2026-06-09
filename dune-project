@@ -19,7 +19,7 @@
  (name ocaml-exercises)
  (synopsis "A short synopsis")
  (description "A longer description")
- (depends ocaml ounit2)
+ (depends ocaml ounit2 utop)
  (tags
   ("add topics" "to describe" your project)))
 
