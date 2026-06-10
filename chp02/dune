@@ -1,4 +1,2 @@
 (library
- (name chp02)
- (public_name ocaml-exercises.chp02))
-
+ (name chp02))
